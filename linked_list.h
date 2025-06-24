@@ -21,10 +21,20 @@
 //
 class linked_list{
   public:
-    // New and delete operators.
+    // Constructor. Set head to null.
     //
-    void * operator new();
-    void operator delete(void *);
+    linked_list();
+    
+    // Destructor.
+    // Frees all nodes that are present in the linked list.
+    //
+    virtual ~linked_list();
+
+    // New and delete operators. Needed to support having a 
+    // custom allocator, which the testing framework uses.
+    //
+    void * operator new(size_t size);
+    void operator delete(void * ptr);
 
     // Methods to implement.
     //
@@ -38,45 +48,27 @@ class linked_list{
 
     size_t size() const;
 
-    iterator * create_iterator(size_t index);
-    iterator * iterate(iterator *);
-
-    // Inner classes.
+    // Inner classes node and iterator.
     //
     struct node {
-      void * operator new();
+      void * operator new(size_t);
       void operator delete(void*);
-      node * next = nullptr;
+      node * next;
       unsigned int data;
     };
 
-    struct iterator {
-      void * operator new(size_t)
-      node * current_node;
-      size_t current_index;
-      unsigned int data;
-    };
+    // Static members for memory allocation and free
+    // function pointers. Very C like.
+    //
+    static void register_malloc(void * (*malloc)(size_t));
+    static void register_free(void (*free)(void*));
+    static void * (*malloc_fptr)(size_t);
+    static void (*free_fptr)(void*);
+
   private:
-    // The C version always returns a pointer, so no 
-    // default constructor that can be called.
+    // The head of the linked list.
     //
-    linked_list() {};
-
-    // Private members.
-    //
-    node * head = nullptr;
+    node * head;
 };
-
-// Registers malloc() function.
-// \param malloc : Function pointer to malloc()-like function.
-// Returns TRUE on success, FALSE otherwise.
-//
-bool linked_list_register_malloc(void * (*malloc)(size_t));
-    
-// Registers free() function.
-// \param free : Function pointer to free()-like function.
-// Returns TRUE on success, FALSE otherwise.
-//
-bool linked_list_register_free(void (*free)(void*));
 
 #endif
