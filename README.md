@@ -13,9 +13,9 @@ an email (pointerwars2025@gmail.com).
 
 In terms of memory allocation and deallocation, your library depends 
 on user-specified malloc() and free() functions, registered 
-via the linked_list_register_malloc() and linked_list_register_free() 
+via the linked_list::register_malloc() and linked_listLLregister_free() 
 functions. See the malloc_fptr and free_fptr function pointer variables 
-in linked_list.c, which you can use in your implementation of your linked 
+in linked_list.cc, which you can use in your implementation of your linked 
 list. One of the reasons for this is code like instrumented_malloc() 
 in linked_list_test_program.cc. Another reason is to allow you 
 to specify to me whether you'd like to use a memory allocation 
