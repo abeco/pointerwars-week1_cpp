@@ -5,6 +5,16 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#define DEBUG
+
+#ifdef DEBUG
+  #define LOG_DEBUG(msg, ...) \
+    printf("File %s Line %d :: " __FILE__, __LINE__); \
+    printf((msg), ##__VA_ARGS__);
+#else
+  #define LOG_DEBUG(msg,...) ((void)0) // compiler will optimize out
+#endif 
+
 // Some rules for Pointer Wars 2025:
 // 0. Implement all functions in linked_list.cc
 // 1. Feel free to add members to the classes, but please do not remove 
@@ -90,6 +100,7 @@ class linked_list{
     // The head of the linked list.
     //
     node * head;
+    node* tail;
 
     // If you hate this name, feel free to change it.
     //
