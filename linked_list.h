@@ -4,16 +4,20 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <cstdio>
 
 #define DEBUG
 
 #ifdef DEBUG
-  #define LOG_DEBUG(msg, ...) \
-    printf("File %s Line %d :: " __FILE__, __LINE__); \
-    printf((msg), ##__VA_ARGS__);
+#define LOG_DEBUG(msg,...) \
+do \
+{ \
+	printf("File %s Line %d :: " msg "\n", __FILE__, __LINE__, ##__VA_ARGS__); \
+	fflush(stdout); \
+} while (0)
 #else
-  #define LOG_DEBUG(msg,...) ((void)0) // compiler will optimize out
-#endif 
+#define LOG_DEBUG(msg,...) ((void)0)
+#endif
 
 // Some rules for Pointer Wars 2025:
 // 0. Implement all functions in linked_list.cc
@@ -65,7 +69,7 @@ class linked_list{
 
     // Returns the size of the linked list.
     //
-    size_t size() const;
+    size_t size() const {return ll_size;};
 
     // Inner classes node and iterator.
     //
@@ -105,6 +109,9 @@ class linked_list{
     // If you hate this name, feel free to change it.
     //
     size_t ll_size;
+
+    node* get_node(size_t index);
+    const node* get_node(size_t index) const;
 };
 
 #endif
